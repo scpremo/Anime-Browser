@@ -3,10 +3,7 @@
 import { css } from "@emotion/react";
 import { useState, useEffect } from "react";
 
-
-
-export default function GenresDropDown() {
-    const genresDropDownStyles = css`
+const genresDropDownStyles = css`
   .dropdown-check-list {
     display: inline-block;
   }
@@ -45,8 +42,10 @@ const itemCss = css`
     list-style: none;
     text-align: left;
     display: block;
-
 `
+
+export default function GenresDropDown() {
+
   const [genres, setGenres] = useState();
   const [setUp, setSetUp] = useState(true);
   const [selectedGenres, setSelectedGenres] = useState({});

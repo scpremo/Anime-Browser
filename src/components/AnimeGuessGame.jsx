@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 import { css } from '@emotion/react';
+import Timer from './Timer'
 import GenresDropDown from './GenresFilter';
+import timer from './Timer';
 
 const overlayStyle = css`
     display: none;
@@ -241,6 +243,7 @@ export default function AnimeGuessGame(){
     const [type, setTpe] = useState('tv')
     const [pages, setPages] = useState(15)
     const [startDate, setStartDate] = useState("2000-01-01")
+    const [enough, setEnough] = useState(false)
 
     // State variable for anime search results
     const [searchResults, setSearchResults] = useState(null);
@@ -254,7 +257,7 @@ export default function AnimeGuessGame(){
     const [videoPlaying, setVideoPlaying] = useState(false);
     const playerRef = useRef(null);
     const [playButton, setPlayButton] = useState(true)
-    const halo3Rat = "xD0fU-lnjAI"
+    const halo3Rat = "x_t4KLfNHOg"
     const fancyHalo3rat = "sCYs-ufyqYY"
 
     //game variables
@@ -268,7 +271,9 @@ export default function AnimeGuessGame(){
     const [gameLength, setGameLength] = useState(3)
     const [scoreScreen,setScoreScreen] = useState(false)
     const[nextRound, setnextRound] = useState(false)
-    const ratChance = 1
+    const [ratChance,setRatChance] = useState(4)//set both for 1 for always rat
+    const ratChanceReset = 1000000//set for 1 for always rat
+    const [correct, setCorrect] = useState(false)
 
     //custom dificulty vars
     const [selectedStatus, setSelectedStatus] = useState('Completed');
@@ -320,6 +325,7 @@ export default function AnimeGuessGame(){
         setShowOverlay(true)
         setGuessing(true)
         setTimerUp(false)
+        setCorrect(false)
         setnextRound(true)
     }
     useEffect(() => {    
@@ -404,8 +410,12 @@ export default function AnimeGuessGame(){
                 // Extract the id from a random entry in the search results
                 const maxPages= data.pagination.last_visible_page
                 if (maxPages<3) {
-                    alert("Not Enough possible results, Pleas broden the search parameters")
+                    // alert("Not Enough possible results, Pleas broden the search parameters")
+                    setEnough(true)
+                    setPages(maxPages)
                 } else {
+                    setEnough(false)
+                    await delay(1000)
                     setPages(maxPages)
                     console.log("Setting pages:", maxPages);
                     console.log("pages:", pages);
@@ -465,11 +475,13 @@ export default function AnimeGuessGame(){
             // Check if the similarity is below the threshold
             if (similarity <= similarityThreshold) {
                 // User's guess is close enough to the anime title
-                alert('Correct guess! You are close to the title.');
+                // alert('Correct guess! You are close to the title.');
+                setCorrect(true)
                 setScore(score + 1); // Update the score
             } else {
                 // User's guess is not close to the anime title
-                alert('Incorrect guess.');
+                // alert('Incorrect guess.');
+                setCorrect(false)
             }
         }
         setGuessing(false)
@@ -498,12 +510,14 @@ export default function AnimeGuessGame(){
         if (Math.random() < 1 / ratChance)
         {
             setOpeningFound(true);
+            setRatChance(ratChanceReset)
             setRandomAnime({synopsis :"Halo 3 Rat",title:"Halo 3 Rat"})
-            if (Math.random() < 1 / 2)
+            //if (Math.random() < 1 / 2)
                 setYoutubeVideoId(halo3Rat);
-            else
-                setYoutubeVideoId(fancyHalo3rat)
+            //else
+              //  setYoutubeVideoId(fancyHalo3rat)
         } else {
+            setRatChance(ratChance-1)
             const controller = new AbortController();
             try {
                 // Build the query parameters
@@ -552,8 +566,7 @@ export default function AnimeGuessGame(){
                                 console.log(openingSongName)
                                 // Use YouTube API to search for the opening song on YouTube
                                 const youtubeApiKey = 'AIzaSyCd9GeZYszVU342h5Z0xnwFUoFV5slu4Jk'; // Replace with your YouTube API key
-                                const youtubeSearchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${openingSongName}&type=video&key=${youtubeApiKey}`;
-
+                                const youtubeSearchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${openingSongName}&type=video&videoSyndicated=true&videoEmbeddable=true&key=${youtubeApiKey}`;
                                 const youtubeResponse = await fetch(youtubeSearchUrl);
                                 const youtubeData = await youtubeResponse.json();
 
@@ -729,6 +742,9 @@ export default function AnimeGuessGame(){
                                                                                                         setStartDate(e.target.value)}} />
                         </div>
                     </div>
+                    {enough && (
+                        <div>Parameters are too narrow, your search prduced: {pages} pages, the game requires a minimum of 3 pages to play,</div>
+                    )}
                 </div>
                 <button className="startButton" onClick={startGame}>START GAME</button>
                 </div>
@@ -749,17 +765,31 @@ export default function AnimeGuessGame(){
                                     onPause={onPause}
                                     onReady={onReady}
                                 />
+                                {!timerUp && videoPlaying &&(
+                                <div css = {css`
+                                    position: relative;
+                                    width: 0;
+                                    height: 0;
+                                    top: -6em;
+                                    left: -64%;
+                                    z-index: 3;
+                                `}>
+                                    <Timer/>
+                                </div>
+                                 )}
                             </div>
                             {playButton && guessing && (
                                 <div className="replayButtons">
-                                    <button onClick={startVideo}>
+                                    {/* <button onClick={startVideo}>
                                         Replay
-                                    </button>
+                                    </button> */}
                                     <button onClick={newRound}>
-                                        Not an anime opening?
+                                        Video Not Playing?
                                     </button>
+                                    
                                 </div>
                             )}
+                            
                             {guessing && timerUp && (
                                 <div>
                                     <h5>
@@ -775,6 +805,12 @@ export default function AnimeGuessGame(){
                             )}
                             {!guessing && (
                                 <div>
+                                    {correct &&(
+                                        <div>You got the correct Answer</div>
+                                    )}
+                                    {!correct &&(
+                                        <div>You got the question wrong</div>
+                                    )}
                                     <div>
                                         Correct Answer = {randomAnime.title}
                                     </div>
@@ -802,9 +838,12 @@ export default function AnimeGuessGame(){
                     )*/}
                 </div>
                 {!guessing && (
-                    <button className="startButton" onClick={newRound}>
-                        NEXT ROUND
-                    </button>
+                    <>                    
+                        <button className="startButton" onClick={newRound}>
+                            NEXT ROUND
+                        </button>
+                        
+                    </>
                 )}
                 </div>
             )}

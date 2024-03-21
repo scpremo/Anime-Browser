@@ -39,7 +39,7 @@ export default function TopAnimeSeason({api, boxText, pageLimit}) {
                 setPages(pageCount);
                 // Cache the fetched data
                 localStorage.setItem(`${api}&${currentPage}`, JSON.stringify(data.data));
-                localStorage.setItem('cachedPages', pageCount);
+                localStorage.setItem(`${api}&cachedPages`, pageCount);
                 localStorage.setItem('cachedTime' ,time)
             } catch (error) {
                 console.error('Error fetching top anime:', error);
@@ -48,15 +48,15 @@ export default function TopAnimeSeason({api, boxText, pageLimit}) {
 
         // Check if data is cached, if not, fetch it
         const cachedTopAnime = JSON.parse(localStorage.getItem(`${api}&${currentPage}`));
-        const cachedPages = localStorage.getItem('cachedPages');
+        const cachedPages = localStorage.getItem(`${api}&cachedPages`);
         const cachedTime = localStorage.getItem('cachedTime');
 
         if (cachedTopAnime && cachedPages && cachedTime && time - cachedTime <= hourInMilliseconds) {
             setTopAnime(cachedTopAnime);
             setPages(cachedPages);
-        } else {
+        } else 
             fetchData();
-        }
+        
       }
     }, [topAnime, setup]); 
 
@@ -126,10 +126,16 @@ export default function TopAnimeSeason({api, boxText, pageLimit}) {
             fetch(`${api}&limit=5&page=${nextPageNumber}`)
                 .then(response => response.json())
                 .then(data => {
-                    setTopAnime(data.data);
-                    setCurrentPage(nextPageNumber);
-                    console.log(data.data)
-                    setTimeout(() => setLocked(false), 333); // Unlock after timeout
+                    console.log(data)
+                    if (data.status === '429')
+                        setTimeout(() => nextPage(), 1000);
+                    else
+                    {
+                        setTopAnime(data.data);
+                        setCurrentPage(nextPageNumber);
+                        // console.log(data.data)
+                        setTimeout(() => setLocked(false), 333); // Unlock after timeout
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching top anime:', error);
@@ -147,9 +153,15 @@ export default function TopAnimeSeason({api, boxText, pageLimit}) {
             fetch(`${api}&limit=5&page=${prevPageNumber}`)
                 .then(response => response.json())
                 .then(data => {
-                    setTopAnime(data.data);
-                    setCurrentPage(prevPageNumber);
-                    setTimeout(() => setLocked(false), 333); // Unlock after timeout
+                    if (data.status === '429')
+                        setTimeout(() => prevPage(), 1000);
+                    else
+                    {
+                        setTopAnime(data.data);
+                        setCurrentPage(prevPageNumber);
+                        // console.log(data.data)
+                        setTimeout(() => setLocked(false), 333); // Unlock after timeout
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching top anime:', error);
@@ -179,7 +191,7 @@ export default function TopAnimeSeason({api, boxText, pageLimit}) {
                 unicode-bidi: isolate;
               `}
             >
-              {topAnime.map((item,index) => <ScrollBoxItem key={item.mal_id} {...item}></ScrollBoxItem>)}
+              {topAnime.map((item,index) => <ScrollBoxItem key={index} {...item}></ScrollBoxItem>)}
             </div>                      
             <Right
                 // onMouseEnter={() => {setIsHoveredLeft(false); setIsHoveredRight(true)}}

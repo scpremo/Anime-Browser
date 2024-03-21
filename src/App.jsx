@@ -7,6 +7,7 @@ import {
 import { css } from '@emotion/react';
 import TopAnimeSeason from "./components/TopAnimeSeason";
 import TopAnime from "./components/TopAnime"
+import AnimeToday from "./components/AnimeToday"
 
 const navStyle = css`
     .navbar{
@@ -59,7 +60,8 @@ export function Home() {
         display:grid;
         justify-content: center;`}>
             <TopAnimeSeason/>   
-            <TopAnime/>        
+            <TopAnime/>   
+            <AnimeToday/>     
         </div>
     
   </>)

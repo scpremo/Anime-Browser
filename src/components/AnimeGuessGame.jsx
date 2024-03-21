@@ -643,6 +643,7 @@ export default function AnimeGuessGame(){
   
       // Sort the filteredData alphabetically by genre
       filteredData.sort((a, b) => a.name.localeCompare(b.name));
+      localStorage.setItem(`genres`, (filteredData));
       setGenres({ data: filteredData });
     } catch (error) {
       console.error('Error fetching anime search results:', error);
@@ -660,7 +661,11 @@ export default function AnimeGuessGame(){
   useEffect(() => {
     if (setUp) {
       console.log("useEffect called");
-      getDropDown();
+      const cahcedGenres = localStorage.getItem("genres")
+      if(cahcedGenres)
+        setGenres({ data: cahcedGenres });
+      else
+        getDropDown();  
       setSetUp(false);
     }
   }, [setUp]);

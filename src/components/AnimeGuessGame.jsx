@@ -271,8 +271,8 @@ export default function AnimeGuessGame(){
     const [gameLength, setGameLength] = useState(3)
     const [scoreScreen,setScoreScreen] = useState(false)
     const[nextRound, setnextRound] = useState(false)
-    const [ratChance,setRatChance] = useState(4)//set both for 1 for always rat
-    const ratChanceReset = 1000000//set for 1 for always rat
+    const [ratChance,setRatChance] = useState(1)//set both for 1 for always rat // set to either 4 or 5 for demo
+    const ratChanceReset = 1//set for 1 for always rat //set back to really large number before demo
     const [correct, setCorrect] = useState(false)
 
     //custom dificulty vars
@@ -564,6 +564,7 @@ export default function AnimeGuessGame(){
                                     openingSongName = animeBody.data.title + " (anime opening) " //+ animeBody.data.theme.openings[0];
                                 // const openingSongName = animeBody.data.theme.openings[Math.floor(Math.random() * animeBody.data.theme.openings.length)];
                                 console.log(openingSongName)
+                                openingSongName = openingSongName.replace(/#/g, '');
                                 // Use YouTube API to search for the opening song on YouTube
                                 const youtubeApiKey = 'AIzaSyCd9GeZYszVU342h5Z0xnwFUoFV5slu4Jk'; // Replace with your YouTube API key
                                 const youtubeSearchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${openingSongName}&type=video&videoSyndicated=true&videoEmbeddable=true&key=${youtubeApiKey}`;
@@ -643,7 +644,8 @@ export default function AnimeGuessGame(){
   
       // Sort the filteredData alphabetically by genre
       filteredData.sort((a, b) => a.name.localeCompare(b.name));
-      localStorage.setItem(`genres`, (filteredData));
+      localStorage.setItem(`genres`, JSON.stringify(filteredData));
+      console.log(filteredData)
       setGenres({ data: filteredData });
     } catch (error) {
       console.error('Error fetching anime search results:', error);
@@ -661,9 +663,10 @@ export default function AnimeGuessGame(){
   useEffect(() => {
     if (setUp) {
       console.log("useEffect called");
-      const cahcedGenres = localStorage.getItem("genres")
+      const cahcedGenres = JSON.parse(localStorage.getItem("genres"))
+      console.log({data: cahcedGenres})
       if(cahcedGenres)
-        setGenres({ data: cahcedGenres });
+        setGenres({data: cahcedGenres});
       else
         getDropDown();  
       setSetUp(false);
@@ -798,7 +801,7 @@ export default function AnimeGuessGame(){
                             {guessing && timerUp && (
                                 <div>
                                     <h5>
-                                        Guess the name of the anime, or song name
+                                        Guess the name of the anime
                                     </h5>
                                     <div className="guessContainer">
                                         <input id='guessInput'/>
@@ -819,7 +822,7 @@ export default function AnimeGuessGame(){
                                     <div>
                                         Correct Answer = {randomAnime.title}
                                     </div>
-                                    {randomAnime.title_english && (
+                                    {randomAnime.title_english && randomAnime.title_english!=randomAnime.title && (
                                         <div>
                                             Correct Answer (English Title) = {randomAnime.title_english}
                                         </div>)}

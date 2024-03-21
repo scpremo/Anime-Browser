@@ -536,7 +536,7 @@ export default function AnimeGuessGame(){
                     });
 
                     // Make the API call
-                    console.log(`https://api.jikan.moe/v4/anime?${queryParams}`)
+                    console.log(`   ${queryParams}`)
                     const response = await fetch(`https://api.jikan.moe/v4/anime?${queryParams}`, { signal: controller.signal });
                     const data = await response.json();
                     console.log(data);

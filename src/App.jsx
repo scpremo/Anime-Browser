@@ -1,10 +1,11 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
     NavLink,
     Outlet,
     useRouteError
 } from 'react-router-dom'
 import { css } from '@emotion/react';
+import TopAnimeSeason from "./components/TopAnimeSeason";
 
 const navStyle = css`
     .navbar{
@@ -50,7 +51,16 @@ const navStyle = css`
 `
 
 export function Home() {
-    return <></>
+  return(
+  <>
+    
+        <div css={css`
+        display:grid;
+        justify-content: center;`}>
+            <TopAnimeSeason/>           
+        </div>
+    
+  </>)
 }
 
 export function Root(props) {

@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 import { css } from '@emotion/react';
 import TopAnimeSeason from "./components/TopAnimeSeason";
+import TopAnime from "./components/TopAnime"
 
 const navStyle = css`
     .navbar{
@@ -57,7 +58,8 @@ export function Home() {
         <div css={css`
         display:grid;
         justify-content: center;`}>
-            <TopAnimeSeason/>           
+            <TopAnimeSeason/>   
+            <TopAnime/>        
         </div>
     
   </>)

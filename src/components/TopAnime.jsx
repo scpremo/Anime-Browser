@@ -26,11 +26,11 @@ export default function TopAnimeSeason() {
     useEffect(() => {
       if (topAnime.length === 0 && setup) {
         console.log("Data fetching useEffect called");
-        fetch(`https://api.jikan.moe/v4/anime?status=airing&type=tv&order_by=score&sort=desc&limit=5`)
+        fetch(`https://api.jikan.moe/v4/anime?type=tv&order_by=score&sort=desc&limit=5`)
           .then(response => response.json())
           .then(data => {
             setTopAnime(data.data);
-            setPages(data.pagination.last_visible_page)
+            setPages(10)//data.pagination.last_visible_page)
             console.log(data);
           })
           .catch(error => {
@@ -109,7 +109,7 @@ export default function TopAnimeSeason() {
             var nextPageNumber = currentPage + 1;
             if (nextPageNumber > pages)
                 nextPageNumber = 1;
-            fetch(`https://api.jikan.moe/v4/anime?status=airing&type=tv&order_by=score&sort=desc&limit=5&page=${nextPageNumber}`)
+            fetch(`https://api.jikan.moe/v4/anime?type=tv&order_by=score&sort=desc&limit=5&page=${nextPageNumber}`)
                 .then(response => response.json())
                 .then(data => {
                     setTopAnime(data.data);
@@ -130,7 +130,7 @@ export default function TopAnimeSeason() {
             var prevPageNumber = currentPage - 1;
             if (prevPageNumber < 1)
                 prevPageNumber = pages;
-            fetch(`https://api.jikan.moe/v4/anime?status=airing&type=tv&order_by=score&sort=desc&limit=5&page=${prevPageNumber}`)
+            fetch(`https://api.jikan.moe/v4/anime?type=tv&order_by=score&sort=desc&limit=5&page=${prevPageNumber}`)
                 .then(response => response.json())
                 .then(data => {
                     setTopAnime(data.data);
@@ -146,7 +146,7 @@ export default function TopAnimeSeason() {
     
     return (
       <>
-        Anime this season
+        Top Anime
         {topAnime.length>0 && (
           <TopAnimeBox 
             onMouseEnter={() => {setIsHoveredLeft(true); setIsHoveredRight(true)}}
@@ -162,9 +162,9 @@ export default function TopAnimeSeason() {
               css={css`    
                 display: flex;    
                 unicode-bidi: isolate;
-              `}
+              `}    
             >
-              {topAnime.map((item,index) => <ScrollBoxItem key={item.mal_id} {...item}></ScrollBoxItem>)}
+              {topAnime.map((item,index) => <ScrollBoxItem key={index} {...item}></ScrollBoxItem>)}
             </div>                      
             <Right
                 onMouseEnter={() => {setIsHoveredLeft(false); setIsHoveredRight(true)}}

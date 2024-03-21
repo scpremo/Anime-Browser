@@ -19,7 +19,7 @@ export default function ScrollBoxItem({mal_id,title,title_english,images}) {
     background-position: left bottom;
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    bottom: 5px;
+    bottom: 3px;
     color: #fff;
     display: inline-block;
     font-family: Avenir, lucida grande, tahoma, verdana, arial, sans-serif;

@@ -832,15 +832,15 @@ export default function AnimeGuessGame(){
 
                     )}
                     {/* Your JSX for displaying search results goes here */}
-                    {/*searchResults && !guessing && (
+                    {searchResults && !guessing && (
                         <div>
                             <h2>Anime Search Results</h2>
                             <div>
                                 {randomAnime.synopsis}
                             </div>
-                            { Display the search results using searchResults object }
+                            
                         </div>
-                    )*/}
+                    )}
                 </div>
                 {!guessing && (
                     <>                    

@@ -23,9 +23,8 @@ const sideCSS = css`
     text-align: center;
 
     img {
-        max-width: 100%;
-        max-height: 100%;
-        height: 68%;
+        width: 320px;
+        height: 450px;
         outline: 3px solid white;
     }
 
@@ -111,9 +110,8 @@ const higherOrLowerStyles = css`
         color: white;
         background-color: black;
         border-radius: 10px;
-        max-width: 70%;
-        min-width: 70%;
-        min-height: 60%;
+        width: 70%;
+        height: 590px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -273,7 +271,7 @@ export default function HigherOrLowerGame() {
             }
             else if (!savedScore){
                 localStorage.setItem("score",score);
-                setHighScore(savedScore)
+                setHighScore(score)
             }
             else{
                 setHighScore(savedScore)

@@ -143,11 +143,33 @@ const containerStyles = css`
         justify-content: space-between;
     }
 
-    .favoriteButton{
-        background: black;
+    .favoriteEmptyButton {
         border: none;
         cursor: pointer;
         color: white;
+        background-image: url(/favorite.png);
+        background-size: 100%, auto;
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 25px;
+        width: 25px;
+        filter: invert(1)
+    }
+
+    .favoriteFilledButton {
+        border: none;
+        cursor: pointer;
+        background: none;
+        background-image: url(/favorite_filled.png);
+        background-size: 100%, auto;
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 25px;
+        width: 25px;
+    }
+
+    .bottomLink{
+        color: lightgray;
     }
 
 `
@@ -157,6 +179,7 @@ export default function SearchDetail() {
     const [characters, setCharacters] = useState(null);
     const [streaming, setStreaming] = useState(null);
     const navigate = useNavigate();
+    const[isFavorite, setIsFavortie] = useState(false)
 
     const opts = {
         height: 'auto',
@@ -166,6 +189,7 @@ export default function SearchDetail() {
     useEffect(() => {
         const fetchAnimeDetails = async () => {
             try {
+                
                 const response = await fetch(
                     `https://api.jikan.moe/v4/anime/${animeId}`
                 );
@@ -177,6 +201,19 @@ export default function SearchDetail() {
                 }
                 const data = await response.json();
                 setAnimeDetails(data.data);
+                var favorites = JSON.parse(localStorage.getItem(`Favorites`));
+                var index = -1;
+                var filteredObj = favorites.data.find(function(item, i){
+                if(item.mal_id === data.data.mal_id){
+                    index = i;
+                    return i;
+                }
+                });
+                console.log(index , filteredObj)
+                if(index !== -1)
+                    setIsFavortie(true)
+
+
                  console.log(data.data);
 
                 const characterResponse = await fetch(
@@ -202,7 +239,44 @@ export default function SearchDetail() {
     }, [animeId]);
 
     const toggleFavorite = () => {
-        //Do what you want Scott
+        if(!isFavorite)
+        {
+            console.log("toggle called")
+            var favorites = JSON.parse(localStorage.getItem(`Favorites`));
+            console.log(favorites)
+            console.log(favorites.data)
+            if(favorites && favorites.data && favorites.data.length >0)
+            {
+                favorites.data.push(animeDetails)
+                favorites={"data": favorites.data}
+                localStorage.setItem("Favorites", JSON.stringify(favorites))
+            }
+            else{   
+                favorites={"data":[animeDetails]}
+                localStorage.setItem("Favorites", JSON.stringify(favorites))
+            }
+            
+            console.log(favorites)
+            setIsFavortie(!isFavorite)
+        }
+        else{
+            var favorites = JSON.parse(localStorage.getItem(`Favorites`));
+                var index = -1;
+                var filteredObj = favorites.data.find(function(item, i){
+                if(item.mal_id === animeDetails.mal_id){
+                    index = i;
+                    return i;
+                }
+                });
+                console.log(index , filteredObj)
+                if(index !== -1)
+                {
+                    favorites.data.splice(index,1)
+                    favorites={"data": favorites.data}
+                    localStorage.setItem("Favorites", JSON.stringify(favorites))
+                    setIsFavortie(!isFavorite)
+                }
+        }
     }
 
 
@@ -213,8 +287,7 @@ export default function SearchDetail() {
                 <div>
                     <div className="nameAndFavorite">
                         <h2>{animeDetails.title_english != null ? animeDetails.title_english : animeDetails.title}</h2>
-                        <button className="favoriteButton"onClick={() => toggleFavorite}>Favorite: ⭐</button>
-                    </div>
+                        <button className={isFavorite ? "favoriteFilledButton" : "favoriteEmptyButton"} onClick={() => toggleFavorite()}></button>                    </div>
                     <div className="imageAndDetails">
                         <img src={animeDetails.images.jpg.image_url} alt="Anime Poster" />
                         <div className="generalDetails">
@@ -284,6 +357,7 @@ export default function SearchDetail() {
                 </div>
             )}
         </div>
+        <a className="bottomLink" href="https://www.flaticon.com/free-icons/star" title="star icons" target="_blank">Star icons created by Aldo Cervantes - Flaticon</a>
         </div>
     );
 }

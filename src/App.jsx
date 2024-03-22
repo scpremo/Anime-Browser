@@ -8,6 +8,7 @@ import { css } from '@emotion/react';
 import TopAnimeSeason from "./components/TopAnimeSeason";
 import TopAnime from "./components/TopAnime"
 import AnimeToday from "./components/AnimeToday"
+import MyFavorites from "./components/MyFavorites";
 
 const navStyle = css`
     .navbar{
@@ -85,6 +86,7 @@ export function Home() {
     
         <div css={homeStyles}>
             <div className="internalContainer">
+                <div className="item"><MyFavorites/></div>
                 <div className="item"><TopAnimeSeason/></div>
                 <div className="item"><TopAnime/></div>
                 <div className="item"><AnimeToday/></div>

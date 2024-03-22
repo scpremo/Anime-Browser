@@ -66,14 +66,13 @@ const itemCss = css`
 `
 
 const containerStyles = css`
-    .externalContainer{
-        margin-top: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 100%;
-    }
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    
 
     .setupAndButton {
         display: flex;
@@ -225,8 +224,10 @@ const containerStyles = css`
 
     .resultsAndButton {
         display: flex;
+        min-width: 70%;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
     }
 `
 
@@ -675,7 +676,6 @@ export default function AnimeGuessGame(){
     
     return (
         <div css={containerStyles}>
-        <div className="externalContainer">
             {gameSetup && (
                 <div className="setupAndButton">
                 <div className="setupContainer">
@@ -806,7 +806,7 @@ export default function AnimeGuessGame(){
                                     <div className="guessContainer">
                                         <input id='guessInput'/>
                                         <button onClick={submitGuess}>
-                                            submit
+                                            Submit
                                         </button>
                                     </div>
                                 </div>
@@ -814,10 +814,10 @@ export default function AnimeGuessGame(){
                             {!guessing && (
                                 <div>
                                     {correct &&(
-                                        <div>You got the correct Answer</div>
+                                        <div>You got the correct answer!</div>
                                     )}
                                     {!correct &&(
-                                        <div>You got the question wrong</div>
+                                        <div>You got the question wrong!</div>
                                     )}
                                     <div>
                                         Correct Answer = {randomAnime.title}
@@ -837,11 +837,10 @@ export default function AnimeGuessGame(){
                     {/* Your JSX for displaying search results goes here */}
                     {searchResults && !guessing && (
                         <div>
-                            <h2>Anime Search Results</h2>
+                            <h2>Anime Synopsis</h2>
                             <div>
                                 {randomAnime.synopsis}
                             </div>
-                            
                         </div>
                     )}
                 </div>
@@ -869,7 +868,6 @@ export default function AnimeGuessGame(){
                 <button className="startButton" onClick={reset}>Play Again?</button>
                 </div>
             )}
-        </div>
         </div>
     );
 };

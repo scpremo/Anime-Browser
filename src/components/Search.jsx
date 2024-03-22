@@ -3,7 +3,113 @@ import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
 
 const searchStyles = css`
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
 
+
+    .searchContainer{
+        color: white;
+        background-color: black;
+        border-radius: 10px;
+        max-width: 70%;
+        width: 70%;
+        min-height: 60%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+    }
+
+    .searchBarAndButtons{
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        width: 30%;
+    }
+
+    .searchButtons{        
+        align-self: center;
+        display: flex;  
+        justify-content: center;
+        align-items: center;        
+        width: 100%;
+    }
+
+    .advancedContainer{
+        margin-left: 40px;
+        margin-right: 40px;
+
+    }
+
+    .advancedOptions{
+        padding: 10px;
+        color: white;
+        border-top: none;
+        display: block;
+        columns: 4;
+        font-size: 12px;
+    }
+
+    .genre{
+        list-style: none;
+        text-align: left;
+        display: block;
+        width:100%;
+    }
+
+    .searchResults{
+        list-style: none;
+        padding: 0px;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .anime{
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        display: flex;
+        flex-direction: row;
+        padding: 10px;
+    }
+
+    .anime img{
+        border: 1px solid white;
+        max-height: 100%;
+        width: auto;
+    }
+
+    .animeDetails{
+        margin-left: 10px;
+    }
+
+    .animeDetails a{
+        color: white;
+    }
+
+    .animeDetails a:hover{
+        color: gray;
+    }
+
+    .animeDetails p{
+        margin: 0px;
+        font-size: 12px;
+    }
+
+    .paginationButtons{
+        align-self: center;
+        display: flex;
+    }
+
+    .paginationButtons span{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 `
 
 export default function Search() {
@@ -28,26 +134,8 @@ export default function Search() {
                         "Hentai",
                         "Magical Sex Shift",
                         "Crossdressing",
-                        "Avant Garde",
-                        "Award Winning",
                         "Boys Love",
-                        "Girls Love",
-                        "Childcare",
-                        "Delinquents",
-                        "Educational",
-                        "High Stakes Game",
-                        "Idols (Male)",
-                        "Medical",
-                        "Organized Crime",
-                        "Performing Arts",
-                        "Pets",
-                        "Reverse Harem",
-                        "Romantic Subtext",
-                        "Showbiz",
-                        "Survival",
-                        "Time Travel",
-                        "Video Game",
-                        "Visual Arts",
+                        "Girls Love"
                       ].includes(genre.name)
                   );
                 setGenres(filteredData.map(genre => ({ ...genre, selected: false })));
@@ -100,39 +188,52 @@ export default function Search() {
     };
 
     return (
-        <div className="searchContainer" css={searchStyles}>
-            <input
-                type="text"
-                placeholder="Search for anime..."
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-            />
-            <button onClick={() => goToPage(1)}>Search</button>
+        <div css={searchStyles}>
+        <div className="searchContainer">
+            <div className="searchBarAndButtons">
+                <input
+                    type="text"
+                    placeholder="Search for anime..."
+                    value={searchTerm}
+                    onChange={(event) => setSearchTerm(event.target.value)}
+                />
+                <div className="searchButtons">
+                    <button onClick={() => goToPage(1)}>Search</button>
+                    <button onClick={() => setAdvanced(!advanced)}>Advanced Search</button>
+                </div>
+            </div>
             <div className="advancedSearch">
-                <button onClick={() => setAdvanced(!advanced)}>Advanced Search Options</button>
                 {advanced && (
-                    <div className="advancedOptions">
-                        <h3>Genres</h3>
-                        {genres.map(genre => (
-                            <label key={genre.name}>
-                                <input
-                                    type="checkbox"
-                                    checked={genre.selected}
-                                    onChange={() => handleCheckboxChange(genre.mal_id)}
-                                />
-                                {genre.name}
-                            </label>
-                        ))}
+                    <div className="advancedContainer">
+                        <h3>Genres/Themes</h3>
+                        <div className="advancedOptions">
+                            {genres.map(genre => (
+                                <label key={genre.name} className="genre">
+                                    <input
+                                        type="checkbox"
+                                        checked={genre.selected}
+                                        onChange={() => handleCheckboxChange(genre.mal_id)}
+                                    />
+                                    {genre.name}
+                                </label>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>
             <ul className="searchResults">
+                {printable && <h3>Anime</h3>}
                 {printable && results && results.data.map((anime) => (
-                    <li key={anime.mal_id}>
+                    <li key={anime.mal_id} className="anime">
                         <img src={anime.images.jpg.small_image_url} alt={anime.title}></img>
-                        <Link to={`/search/${anime.mal_id}`}>
-                            {anime.title_english != null ? anime.title_english : anime.title}
-                        </Link>
+                        <div className="animeDetails">
+                            <Link to={`/search/${anime.mal_id}`} target="_blank">
+                                {anime.title_english != null ? anime.title_english : anime.title}
+                            </Link>
+                            <p>{anime.type} ({anime.episodes} eps)</p>
+                            <p>{anime.rating}</p>
+                            <p>Scored {anime.score}</p>
+                        </div>
                     </li>
                 ))}
             </ul>
@@ -155,6 +256,7 @@ export default function Search() {
                     </div>
                 )}
             </div>
+        </div>
         </div>
     );
 }

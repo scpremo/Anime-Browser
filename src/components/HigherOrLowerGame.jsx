@@ -1,36 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { css } from '@emotion/react';
 
+
 const pageCSS = css`
     display: flex;
-    position: absolute;
     flex-direction: row;
-    width: 100%;
+    align-self: stretch;
+    flex-grow: 1;
+    max-width: 50%;
     height: 100%;
-    right: 0;
-    bottom: 0;
-    z-index: -2;
 `
 
 const sideCSS = css`
     display: flex;
-    position: relative;
+    min-width: 0;
+    flex-grow: 1; 
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
-    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
     text-align: center;
-    outline:2px solid black;
-    color: #0094ff;
 
     img {
-        bottom: 3%;
         max-width: 100%;
         max-height: 100%;
         height: 68%;
-        z-index: -2;
         outline: 3px solid white;
     }
 
@@ -50,14 +45,6 @@ const sideCSS = css`
         }
     }
 
-    .score {
-        position: absolute;
-        color: black;
-        bottom: 0;
-        left: 1%;
-        font-size: 25px;
-        font-weight: bold
-    }
 
     .buttonDiv {
         margin-top: 30px;
@@ -96,15 +83,54 @@ const endStyles = css`
     }
 `
 
+const higherOrLowerStyles = css`
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    min-height: 100%;
+
+
+    .internalContainer{
+        color: white;
+        background-color: black;
+        border-radius: 10px;
+        max-width: 70%;
+        min-width: 70%;
+        min-height: 60%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;        
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+    }
+
+    .score {
+        font-size: 25px;
+        font-weight: bold
+    }
+
+`
+
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-export default function HigherOrLowerGame(){
+export default function HigherOrLowerGame() {
     const [searchResults, setSearchResults] = useState([])
     const [loadingData, setLoadingData] = useState(false)
     const [loseState, setloseState] = useState(false)
     const [score, setScore] = useState(0)
-
+    const badGenres = [
+        "Ecchi",
+        "Erotica",
+        "Hentai",
+        "Magical Sex Shift",
+        "Crossdressing",
+        "Boys Love",
+        "Girls Love"
+      ];
 
     // get first 3 random animes
     const getInitialAnimeSearchResults = async () => {
@@ -113,15 +139,17 @@ export default function HigherOrLowerGame(){
             //Hard coded query parameters
             const queryParams = new URLSearchParams({
                 sfw: true,
-                page: Math.floor(Math.random() * (1569-1)+1) ,
+                page: Math.floor(Math.random() * (1569 - 1) + 1),
                 limit: 3,
                 type: "tv",
-                min_score: 1
+                min_score: 1,
+                genres_exclude: badGenres
             });
             // Make the API call
             console.log(`https://api.jikan.moe/v4/anime?${queryParams}`)
             const response = await fetch(`https://api.jikan.moe/v4/anime?${queryParams}`, { signal: controller.signal });
             const data = await response.json();
+            console.log(data);
             setSearchResults([...searchResults, data.data[0], data.data[2], data.data[1]]);
         } catch (error) {
             console.error('Error fetching anime search results:', error);
@@ -136,10 +164,11 @@ export default function HigherOrLowerGame(){
             //Hard coded query parameters
             const queryParams = new URLSearchParams({
                 sfw: true,
-                page: Math.floor(Math.random() * (4707-1)+1) ,
+                page: Math.floor(Math.random() * (4707 - 1) + 1),
                 limit: 1,
                 type: "tv",
-                min_score: 1
+                min_score: 1,
+                genres_exclude: badGenres
             });
 
             // Make the API call
@@ -153,8 +182,10 @@ export default function HigherOrLowerGame(){
         return () => controller.abort();
     };
 
+
+
     // get new anime when needed
-    useEffect(() => {      
+    useEffect(() => {
         if (searchResults.length == 0) {
             getInitialAnimeSearchResults()
         }
@@ -177,7 +208,7 @@ export default function HigherOrLowerGame(){
             }
             setLoadingData(false)
 
-            console.log("after higher: " , searchResults)
+            console.log("after higher: ", searchResults)
         }
     }
 
@@ -199,46 +230,47 @@ export default function HigherOrLowerGame(){
             setloseState(true)
     }
 
-    const reset = () =>{
+    const reset = () => {
         setScore(0)
         setSearchResults([])
         setloseState(false)
     }
 
-    return(
-        <>
-            <div css={pageCSS}>
-                <div css={sideCSS}>
-                    <p>"{searchResults.length == 0 ? null : (searchResults[0].title_english != null ? searchResults[0].title_english : searchResults[0].title)}"</p>
-                    <img src={searchResults.length == 0 ? null : searchResults[0].images.jpg.large_image_url} />
-                    
-                    {/* <p className="truncate">{searchResults.length == 0 ? null : searchResults[0].synopsis}</p> */}
-                    <p>Rating: {searchResults.length == 0 ? null : searchResults[0].score}</p>
-                    <p className="score">Score: {score}</p>
-                </div>
-                <div css={sideCSS}>
-                    <p>"{searchResults.length == 0 ? null : (searchResults[1].title_english != null ? searchResults[1].title_english : searchResults[1].title)}"</p>
-                    <img src={searchResults.length == 0 ? null : searchResults[1].images.jpg.large_image_url} />
-                    
-                    {/* <p className="truncate">{searchResults.length == 0 ? null : searchResults[1].synopsis}</p> */}
-                    {loseState ? <p>Rating: {searchResults.length == 0 ? null : searchResults[1].score}</p> : 
-                    <div className="buttonDiv">
-                        <button onClick={higherSelected}>Higher</button>
-                        <button onClick={lowerSelected}>Lower</button>
+    return (
+        <div css={higherOrLowerStyles}>
+            <div className="internalContainer">
+                <p className="score">Score: {score}</p>
+                <div css={pageCSS}>
+                    <div css={sideCSS}>
+                        <p>"{searchResults.length == 0 ? null : (searchResults[0].title_english != null ? searchResults[0].title_english : searchResults[0].title)}"</p>
+                        <img src={searchResults.length == 0 ? null : searchResults[0].images.jpg.large_image_url} />
+
+                        {/* <p className="truncate">{searchResults.length == 0 ? null : searchResults[0].synopsis}</p> */}
+                        <p>Rating: {searchResults.length == 0 ? null : searchResults[0].score}</p>
                     </div>
-                    }
+                    <div css={sideCSS}>
+                        <p>"{searchResults.length == 0 ? null : (searchResults[1].title_english != null ? searchResults[1].title_english : searchResults[1].title)}"</p>
+                        <img src={searchResults.length == 0 ? null : searchResults[1].images.jpg.large_image_url} />
+
+                        {/* <p className="truncate">{searchResults.length == 0 ? null : searchResults[1].synopsis}</p> */}
+                        {loseState ? <p>Rating: {searchResults.length == 0 ? null : searchResults[1].score}</p> :
+                            <div className="buttonDiv">
+                                <button onClick={higherSelected}>Higher</button>
+                                <button onClick={lowerSelected}>Lower</button>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
 
             {loseState &&
-            <div css={endStyles}>
-                <p>You Lose</p>
-                <p>Score: {score}</p>
-                <button className="startButton" onClick={reset}>Play Again?</button>
-            </div>
+                <div css={endStyles}>
+                    <p>You Lose</p>
+                    <p>Score: {score}</p>
+                    <button className="startButton" onClick={reset}>Play Again?</button>
+                </div>
             }
-            
-        </>
+        </div>
     )
 }
 

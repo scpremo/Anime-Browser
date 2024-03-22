@@ -134,26 +134,8 @@ export default function Search() {
                         "Hentai",
                         "Magical Sex Shift",
                         "Crossdressing",
-                        "Avant Garde",
-                        "Award Winning",
                         "Boys Love",
-                        "Girls Love",
-                        "Childcare",
-                        "Delinquents",
-                        "Educational",
-                        "High Stakes Game",
-                        "Idols (Male)",
-                        "Medical",
-                        "Organized Crime",
-                        "Performing Arts",
-                        "Pets",
-                        "Reverse Harem",
-                        "Romantic Subtext",
-                        "Showbiz",
-                        "Survival",
-                        "Time Travel",
-                        "Video Game",
-                        "Visual Arts",
+                        "Girls Love"
                       ].includes(genre.name)
                   );
                 setGenres(filteredData.map(genre => ({ ...genre, selected: false })));

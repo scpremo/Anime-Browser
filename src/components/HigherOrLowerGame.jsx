@@ -17,7 +17,7 @@ const sideCSS = css`
     flex-grow: 1; 
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     min-width: 100%;
     min-height: 100%;
     text-align: center;
@@ -27,6 +27,13 @@ const sideCSS = css`
         max-height: 100%;
         height: 68%;
         outline: 3px solid white;
+    }
+
+    p{
+        margin-top: 10px;
+        margin-bottom: 0px;
+        min-height:10%;
+        max-height: 10%;
     }
 
     .truncate {
@@ -47,41 +54,49 @@ const sideCSS = css`
 
 
     .buttonDiv {
-        margin-top: 30px;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
     }
     
 `
 
 const endStyles = css`
-    display: flex;
     position: absolute;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.7);;
-    height: 100%;    
+    top: 0;
+    left: 0;
     width: 100%;
-    bottom: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+
 
     p {
         color: red;
         font-size: 50px;
+        margin: 10px 0;
     }
+
     .startButton {
-        margin-top: 20px;
         height: 40px;
         border-radius: 10px;
         font-size: 28px;
-        align-self: center;
         background: linear-gradient(to bottom right, #29cdff, #9d00fd);
         color: white;
         width: 35%;
         outline: 2px solid black;
         outline-offset: -6px;
         border: 1px solid black;
-        margin-bottom: 20px;
+        margin-top: 20px;
     }
-`
+`;
 
 const higherOrLowerStyles = css`
     margin-top: 20px;
@@ -105,9 +120,11 @@ const higherOrLowerStyles = css`
         align-items: center;        
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         padding: 20px;
+        position: relative;
     }
 
     .score {
+        margin:0px;
         font-size: 25px;
         font-weight: bold
     }
@@ -296,16 +313,15 @@ export default function HigherOrLowerGame() {
                         }
                     </div>
                 </div>
+                {loseState &&
+                    <div css={endStyles}>
+                        <p>You Lose</p>
+                        <p>Score: {score}</p>
+                        <p>High Score: {highScore}</p>
+                        <button className="startButton" onClick={reset}>Play Again?</button>
+                    </div>
+                }
             </div>
-
-            {loseState &&
-                <div css={endStyles}>
-                    <p>You Lose</p>
-                    <p>Score: {score}</p>
-                    <p>High Score: {highScore}</p>
-                    <button className="startButton" onClick={reset}>Play Again?</button>
-                </div>
-            }
         </div>
     )
 }

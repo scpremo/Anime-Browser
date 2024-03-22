@@ -52,16 +52,43 @@ const navStyle = css`
     
 `
 
+const homeStyles = css`
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+
+
+    .internalContainer{
+        color: white;
+        background-color: black;
+        border-radius: 10px;
+        max-width: 70%;
+        width: 70%;
+        min-height: 60%;
+        display: grid;
+        justify-content: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+    }
+
+    .item{
+        margin-bottom: 10px;
+    }
+`
+
 export function Home() {
   return(
   <>
     
-        <div css={css`
-        display:grid;
-        justify-content: center;`}>
-            <TopAnimeSeason/>   
-            <TopAnime/>   
-            <AnimeToday/>     
+        <div css={homeStyles}>
+            <div className="internalContainer">
+                <div className="item"><TopAnimeSeason/></div>
+                <div className="item"><TopAnime/></div>
+                <div className="item"><AnimeToday/></div>
+            </div>
         </div>
     
   </>)

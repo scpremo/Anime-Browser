@@ -272,8 +272,8 @@ export default function AnimeGuessGame(){
     const [gameLength, setGameLength] = useState(3)
     const [scoreScreen,setScoreScreen] = useState(false)
     const[nextRound, setnextRound] = useState(false)
-    const [ratChance,setRatChance] = useState(1)//set both for 1 for always rat // set to either 4 or 5 for demo
-    const ratChanceReset = 1//set for 1 for always rat //set back to really large number before demo
+    const [ratChance,setRatChance] = useState(4)//set both for 1 for always rat // set to either 4 or 5 for demo
+    const ratChanceReset = 100//set for 1 for always rat //set back to really large number before demo
     const [correct, setCorrect] = useState(false)
 
     //custom dificulty vars
@@ -289,7 +289,7 @@ export default function AnimeGuessGame(){
             setTimeout(() => {
                 if (guessing) {
                     event.target.pauseVideo();
-                    console.log("pausing video")
+                    //console.log("pausing video")
                     setVideoPlaying(false)
                 }
                 setTimerUp(true)
@@ -302,8 +302,8 @@ export default function AnimeGuessGame(){
     const onReady = (event) => {
         playerRef.current = event.target;
         event.target.playVideo()
-        console.log("play video")
-        console.log("waiting to then play video")
+        //console.log("play video")
+        //console.log("waiting to then play video")
     };
     const startVideo = () => {
         // Check if the player reference is available
@@ -331,7 +331,7 @@ export default function AnimeGuessGame(){
     }
     useEffect(() => {    
         if(!gameSetup && nextRound) {
-            console.log("new round useEffect called")
+            //console.log("new round useEffect called")
             if(gameLength <= 0) {
                 setScoreScreen(true)
             } else
@@ -381,7 +381,7 @@ export default function AnimeGuessGame(){
     const startGame = () =>{
         setGameLength(selectedGameLength);
         setScore(0)
-        console.log(checkQuery())
+        //console.log(checkQuery())
         checkQuery()
     }
 
@@ -402,10 +402,10 @@ export default function AnimeGuessGame(){
             });
 
             // Make the API call
-            console.log(`https://api.jikan.moe/v4/anime?${queryParams}`)
+            //console.log(`https://api.jikan.moe/v4/anime?${queryParams}`)
             const response = await fetch(`https://api.jikan.moe/v4/anime?${queryParams}`, { signal: controller.signal });
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
             setSearchResults(data);
             if (data && data.pagination) {
                 // Extract the id from a random entry in the search results
@@ -418,8 +418,8 @@ export default function AnimeGuessGame(){
                     setEnough(false)
                     await delay(1000)
                     setPages(maxPages)
-                    console.log("Setting pages:", maxPages);
-                    console.log("pages:", pages);
+                    //console.log("Setting pages:", maxPages);
+                    //console.log("pages:", pages);
                     setGameSetup(false);   
                 }
             }           
@@ -432,7 +432,7 @@ export default function AnimeGuessGame(){
     useEffect(() => {    
         if(!gameSetup)
         {
-            console.log("useEffect called")
+            //console.log("useEffect called")
             
             getAnimeSearchResults();
         }
@@ -447,7 +447,7 @@ export default function AnimeGuessGame(){
         setGameLength(gameLength-1)
         setUserGuess(document.getElementById('guessInput').value)
         const userInput = document.getElementById('guessInput').value;
-        console.log(randomAnime)
+        //console.log(randomAnime)
         setShowOverlay(false);
         // Check if there's an opening found and a valid user input
         if (randomAnime && userInput.trim() !== '') {
@@ -470,9 +470,9 @@ export default function AnimeGuessGame(){
 
             // Set a threshold for similarity (adjust as needed)
             const similarityThreshold = Math.floor(longer/6);
-            console.log("guess ==" + userInput)
-            console.log("answer1 ==" + animeTitle)
-            console.log("answer2 ==" + animeTitleEnglish)
+            //console.log("guess ==" + userInput)
+            //console.log("answer1 ==" + animeTitle)
+            //console.log("answer2 ==" + animeTitleEnglish)
             // Check if the similarity is below the threshold
             if (similarity <= similarityThreshold) {
                 // User's guess is close enough to the anime title
@@ -537,25 +537,25 @@ export default function AnimeGuessGame(){
                     });
 
                     // Make the API call
-                    console.log(`   ${queryParams}`)
+                    //console.log(`   ${queryParams}`)
                     const response = await fetch(`https://api.jikan.moe/v4/anime?${queryParams}`, { signal: controller.signal });
                     const data = await response.json();
-                    console.log(data);
+                    //console.log(data);
                     setSearchResults(data);
                     if (data && data.data) {
                         // Extract the id from a random entry in the search results
                         const rand = Math.floor(Math.random() * data.data.length);
                         const id = data.data[rand].mal_id;
-                        console.log('id ==' + id);
+                        //console.log('id ==' + id);
 
                         try {
                             // Make the second API call using the extracted id
                             const animeResponse = await fetch(`https://api.jikan.moe/v4/anime/${id}/full`);
                             const animeBody = await animeResponse.json();
-                            console.log(animeBody);
+                            //console.log(animeBody);
 
                             if (animeBody.data.theme && animeBody.data.theme.openings.length > 0) {
-                                console.log("Anime with opening found   ");
+                                //console.log("Anime with opening found   ");
                                 setOpeningFound(true);
                                 setRandomAnime(animeBody.data)
                                 var openingSongName
@@ -564,7 +564,7 @@ export default function AnimeGuessGame(){
                                 // else
                                     openingSongName = animeBody.data.title + " (anime opening) " //+ animeBody.data.theme.openings[0];
                                 // const openingSongName = animeBody.data.theme.openings[Math.floor(Math.random() * animeBody.data.theme.openings.length)];
-                                console.log(openingSongName)
+                                //console.log(openingSongName)
                                 openingSongName = openingSongName.replace(/#/g, '');
                                 // Use YouTube API to search for the opening song on YouTube
                                 const youtubeApiKey = 'AIzaSyCd9GeZYszVU342h5Z0xnwFUoFV5slu4Jk'; // Replace with your YouTube API key
@@ -576,16 +576,16 @@ export default function AnimeGuessGame(){
                                     // Extract the video ID of the first result
                                     const videoId = youtubeData.items[0].id.videoId;
                                     setYoutubeVideoId(videoId);
-                                    console.log(youtubeData.items)
+                                    //console.log(youtubeData.items)
                                 }
                             }
                             else if (animeBody) {
                                 await delay(1000)
                                 getAnimeSearchResults();
-                                console.log("opening not found")
+                                //console.log("opening not found")
                             }
                         } catch (err) {
-                            console.log(err);
+                            //console.log(err);
                         }
                     }
                 }
@@ -605,7 +605,7 @@ export default function AnimeGuessGame(){
   const getDropDown = async () => {
     const controller = new AbortController();
     try {
-      console.log(`https://api.jikan.moe/v4/genres/anime`);
+      //console.log(`https://api.jikan.moe/v4/genres/anime`);
       const response = await fetch(`https://api.jikan.moe/v4/genres/anime`, {
         signal: controller.signal,
       });
@@ -639,14 +639,15 @@ export default function AnimeGuessGame(){
             "Survival",
             "Time Travel",
             "Video Game",
-            "Visual Arts",
+            "Visual Arts",,
+            "Combat Sports"
           ].includes(genre.name)
       );
   
       // Sort the filteredData alphabetically by genre
       filteredData.sort((a, b) => a.name.localeCompare(b.name));
       localStorage.setItem(`genres`, JSON.stringify(filteredData));
-      console.log(filteredData)
+      //console.log(filteredData)
       setGenres({ data: filteredData });
     } catch (error) {
       console.error('Error fetching anime search results:', error);
@@ -663,9 +664,9 @@ export default function AnimeGuessGame(){
 
   useEffect(() => {
     if (setUp) {
-      console.log("useEffect called");
+      //console.log("useEffect called");
       const cahcedGenres = JSON.parse(localStorage.getItem("genres"))
-      console.log({data: cahcedGenres})
+      //console.log({data: cahcedGenres})
       if(cahcedGenres)
         setGenres({data: cahcedGenres});
       else

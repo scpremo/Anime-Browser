@@ -72,8 +72,10 @@ const containerStyles = css`
     }
 
     .imageAndDetails img{
-        aspect-ratio: auto 160 / 220;
-
+        max-width: 100%;
+        max-height: 100%;
+        height: 68%;
+        outline: 3px solid white;
     }
 
     .generalDetails{

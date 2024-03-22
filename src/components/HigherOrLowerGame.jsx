@@ -122,6 +122,7 @@ export default function HigherOrLowerGame() {
     const [loadingData, setLoadingData] = useState(false)
     const [loseState, setloseState] = useState(false)
     const [score, setScore] = useState(0)
+    const [highScore, setHighScore] = useState(0)
     const badGenres = [
         "Ecchi",
         "Erotica",
@@ -218,7 +219,24 @@ export default function HigherOrLowerGame() {
             shiftImages()
         }
         else
+        {
+            
+            var savedScore = localStorage.getItem("score")
+            console.log(savedScore)
+            if(savedScore && (score > savedScore ) )  
+            {
+                localStorage.setItem("score",score);
+                setHighScore(score);
+            }
+            else if (!savedScore){
+                localStorage.setItem("score",score);
+                setHighScore(savedScore)
+            }
+            else{
+                setHighScore(savedScore)
+            }
             setloseState(true)
+        }
     }
 
     function lowerSelected() {
@@ -227,7 +245,24 @@ export default function HigherOrLowerGame() {
             shiftImages()
         }
         else
+        {
+            
+            var savedScore = localStorage.getItem("score")
+            console.log(savedScore)
+            if(savedScore && (score >= savedScore ) )  
+            {
+                localStorage.setItem("score",score);
+                setHighScore(score);
+            }
+            else if (!savedScore){
+                localStorage.setItem("score",score);
+                setHighScore(savedScore)
+            }
+            else{
+                setHighScore(savedScore)
+            }
             setloseState(true)
+        }
     }
 
     const reset = () => {
@@ -267,6 +302,7 @@ export default function HigherOrLowerGame() {
                 <div css={endStyles}>
                     <p>You Lose</p>
                     <p>Score: {score}</p>
+                    <p>High Score: {highScore}</p>
                     <button className="startButton" onClick={reset}>Play Again?</button>
                 </div>
             }

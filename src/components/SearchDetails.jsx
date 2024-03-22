@@ -147,6 +147,7 @@ const containerStyles = css`
         border: none;
         cursor: pointer;
         color: white;
+        background: none;
         background-image: url(/favorite.png);
         background-size: 100%, auto;
         background-position: center center;

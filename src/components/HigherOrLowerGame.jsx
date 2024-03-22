@@ -209,7 +209,7 @@ export default function HigherOrLowerGame(){
         <>
             <div css={pageCSS}>
                 <div css={sideCSS}>
-                    <p>"{searchResults.length == 0 ? null : searchResults[0].title}"</p>
+                    <p>"{searchResults.length == 0 ? null : (searchResults[0].title_english != null ? searchResults[0].title_english : searchResults[0].title)}"</p>
                     <img src={searchResults.length == 0 ? null : searchResults[0].images.jpg.large_image_url} />
                     
                     {/* <p className="truncate">{searchResults.length == 0 ? null : searchResults[0].synopsis}</p> */}
@@ -217,7 +217,7 @@ export default function HigherOrLowerGame(){
                     <p className="score">Score: {score}</p>
                 </div>
                 <div css={sideCSS}>
-                    <p>"{searchResults.length == 0 ? null : searchResults[1].title}"</p>
+                    <p>"{searchResults.length == 0 ? null : (searchResults[1].title_english != null ? searchResults[1].title_english : searchResults[1].title)}"</p>
                     <img src={searchResults.length == 0 ? null : searchResults[1].images.jpg.large_image_url} />
                     
                     {/* <p className="truncate">{searchResults.length == 0 ? null : searchResults[1].synopsis}</p> */}

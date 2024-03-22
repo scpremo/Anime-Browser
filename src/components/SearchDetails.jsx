@@ -22,7 +22,7 @@ const CharacterText = styled.span`
     padding: 15px 5px 5px;
     position: absolute;
     text-shadow: rgba(0,0,0,.8) 1px 1px 0;
-    min-width: 100%
+    width: 100%
 
 `
 const TextBox = styled.h3`
@@ -95,6 +95,8 @@ const containerStyles = css`
         color: grey;
     }
     
+
+    
     .characterContainer{
         display: flex;
         flex-direction: row;
@@ -128,6 +130,11 @@ const containerStyles = css`
     .youtubeContainer{
     
     }
+
+    .noImage{
+        margin-left: 10px;
+    }
+
 `
 export default function SearchDetail() {
     const { animeId } = useParams();
@@ -162,7 +169,7 @@ export default function SearchDetail() {
                 );
                 const detailsData = await characterResponse.json();
                 setCharacters(detailsData.data);
-                // console.log(detailsData);
+                 console.log(detailsData);
 
                 const streamingResponse = await fetch(
                     `https://api.jikan.moe/v4/anime/${animeId}/streaming`
@@ -214,7 +221,7 @@ export default function SearchDetail() {
                             <YouTube opts={opts} videoId={animeDetails.trailer.youtube_id}/>
                         </div>}
                     </div>
-                    <p>{animeDetails.synopsis.replace("[Written by MAL Rewrite]", "")}</p>
+                    <p>{animeDetails.synopsis != null && animeDetails.synopsis.replace("[Written by MAL Rewrite]", "")}</p>
 
                     {characters && (
                         <div>
@@ -224,13 +231,20 @@ export default function SearchDetail() {
                                 .filter((character) => character.role === "Main")
                                 .map((character) => (
                                     <li key={character.character.name} className="individualCharacter">
-                                        <AnotherBox>
-                                            <CharacterImage src={character.character.images.jpg.image_url} alt={character.character.name}/>
-                                            <TextBox>
-                                                <CharacterText className="name">{character.character.name.split(", ").reverse().join(" ")}</CharacterText>
-                                            </TextBox>
-                                        </AnotherBox>
-                                        <p>VAs:</p>
+                                        {character.character.images.jpg.image_url !== "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c" && 
+                                            <AnotherBox>
+                                                <CharacterImage src={character.character.images.jpg.image_url} alt={character.character.name}/>
+                                                <TextBox>
+                                                    <CharacterText className="name">{character.character.name.split(", ").reverse().join(" ")}</CharacterText>
+                                                </TextBox>
+                                            </AnotherBox>
+                                        }
+                                        {character.character.images.jpg.image_url == "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c" &&
+                                            <div className="noImage">
+                                                <p className="name">{character.character.name.split(", ").reverse().join(" ")}</p>
+                                            </div>
+                                        }
+                                        {character.voice_actors.length !== 0 && (<p>VAs:</p>)}
                                         <div>{character.voice_actors
                                             .filter((va) => va.language === "Japanese" || va.language === "English")
                                             .map((va) => {

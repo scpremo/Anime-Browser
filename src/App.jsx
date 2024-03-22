@@ -74,17 +74,17 @@ export function Root(props) {
             <nav css={navStyle}>
                 <ul className="navbar" >
                     <li className='homeButton'><NavLink to="/">Home</NavLink></li>
-                    <li><NavLink to="/guessSong" style={({isActive}) => {
+                    <li><NavLink to="/guessSong" style={({ isActive }) => {
                         return {
                             backgroundColor: isActive ? "#111" : ""
                         }
                     }}>Guess the Opening!</NavLink></li>
-                    <li><NavLink to="/higherOrLower" style={({isActive}) => {
+                    <li><NavLink to="/higherOrLower" style={({ isActive }) => {
                         return {
                             backgroundColor: isActive ? "#111" : ""
                         }
                     }}>Higher or Lower?</NavLink></li>
-                    <li><NavLink to="/search" style={({isActive}) => {
+                    <li><NavLink to="/search" style={({ isActive }) => {
                         return {
                             backgroundColor: isActive ? "#111" : ""
                         }
@@ -98,7 +98,7 @@ export function Root(props) {
 
 export function ErrorPage() {
     const error = useRouteError()
-    if(error){
+    if (error) {
         console.error(error)
         return (
             <>
@@ -108,7 +108,7 @@ export function ErrorPage() {
         )
     }
     //otherwise assume sent here for 404
-    else{
+    else {
         return (
             <h1>404 - Page Not Found!</h1>
         )

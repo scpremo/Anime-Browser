@@ -14,6 +14,7 @@ import {
 import Search from './components/Search';
 import HigherOrLowerGame from './components/HigherOrLowerGame';
 import AnimeGuessGame from './components/AnimeGuessGame';
+import SearchDetail from './components/SearchDetails';
 
 const globalStyles = css`
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
@@ -38,7 +39,8 @@ const router = createBrowserRouter([
           { index: true, element: <Home /> },
           { path: "guessSong", element: <AnimeGuessGame />},
           { path: "higherOrLower", element: <HigherOrLowerGame />},
-          { path: "search", element: <Search /> },
+          { path: "search", element: <Search />},
+          {path: "search/:animeId/", element: <SearchDetail />},
           { path: "*", element: <ErrorPage />}
       ]
   },

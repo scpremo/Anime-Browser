@@ -172,7 +172,7 @@ export default function TopAnimeSeason({api, boxText, pageLimit}) {
     
     return (
       <>
-        {boxText}
+        <h3>{boxText}</h3>
         {topAnime.length>0 && (
           <TopAnimeBox 
             onMouseEnter={() => {setIsHoveredLeft(true); setIsHoveredRight(true)}}

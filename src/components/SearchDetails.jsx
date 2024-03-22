@@ -137,6 +137,19 @@ const containerStyles = css`
         margin-left: 10px;
     }
 
+    .nameAndFavorite{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .favoriteButton{
+        background: black;
+        border: none;
+        cursor: pointer;
+        color: white;
+    }
+
 `
 export default function SearchDetail() {
     const { animeId } = useParams();
@@ -188,12 +201,20 @@ export default function SearchDetail() {
         fetchAnimeDetails();
     }, [animeId]);
 
+    const toggleFavorite = () => {
+        //Do what you want Scott
+    }
+
+
     return (
         <div css={containerStyles}>
         <div className="animeContainer">
             {animeDetails && (
                 <div>
-                    <h2>{animeDetails.title_english != null ? animeDetails.title_english : animeDetails.title}</h2>
+                    <div className="nameAndFavorite">
+                        <h2>{animeDetails.title_english != null ? animeDetails.title_english : animeDetails.title}</h2>
+                        <button className="favoriteButton"onClick={() => toggleFavorite}>Favorite: ⭐</button>
+                    </div>
                     <div className="imageAndDetails">
                         <img src={animeDetails.images.jpg.image_url} alt="Anime Poster" />
                         <div className="generalDetails">

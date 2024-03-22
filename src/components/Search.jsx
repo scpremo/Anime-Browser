@@ -132,13 +132,11 @@ export default function Search() {
                         "Ecchi",
                         "Erotica",
                         "Hentai",
-                        "Magical Sex Shift",
-                        "Crossdressing",
-                        "Boys Love",
-                        "Girls Love"
                       ].includes(genre.name)
                   );
+                filteredData.sort((a, b) => a.name.localeCompare(b.name));
                 setGenres(filteredData.map(genre => ({ ...genre, selected: false })));
+
             } catch (error) {
                 console.error('Error fetching genres:', error);
             }
@@ -156,7 +154,7 @@ export default function Search() {
             try {
                 const selectedGenres = genres.filter(genre => genre.selected).map(genre => genre.mal_id).join(",");
                 console.log(page);
-                const response = await fetch(`https://api.jikan.moe/v4/anime?q=${searchTerm}&genres=${selectedGenres}&page=${page}`);
+                const response = await fetch(`https://api.jikan.moe/v4/anime?sfw=true&q=${searchTerm}&genres=${selectedGenres}&page=${page}`);
                 const data = await response.json();
                 const uniqueResults = data.data.reduce((unique, anime) => {
                     if (!unique.some(item => item.mal_id === anime.mal_id)) {

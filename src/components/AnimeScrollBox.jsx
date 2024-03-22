@@ -27,7 +27,7 @@ export default function TopAnimeSeason({api, boxText, pageLimit}) {
     useEffect(() => {
       if (topAnime.length === 0 && setup) {
         const time = new Date().getTime()
-        const hourInMilliseconds = 3600000 * 24; // 1 hour in milliseconds
+        const hourInMilliseconds = 3600000; // 1 hour in milliseconds
         const fetchData = async () => {
             try {
                 const response = await fetch(`${api}&limit=5&page=${currentPage}`);

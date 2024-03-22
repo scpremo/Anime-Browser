@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import YouTube from 'react-youtube';
 
 const CharacterImage = styled.img`
     aspect-ratio: auto 9 / 14;
+    min-width: 100%;
 `
 const CharacterText = styled.span`
     background-image: url(/image_box_shadow_bottom.png?v=1634263200);
     background-position: left bottom;
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    bottom: 3px;
+    bottom: 0;
     display: inline-block;
     font-family: Avenir, lucida grande, tahoma, verdana, arial, sans-serif;
     font-size: 11px;
@@ -20,12 +22,15 @@ const CharacterText = styled.span`
     padding: 15px 5px 5px;
     position: absolute;
     text-shadow: rgba(0,0,0,.8) 1px 1px 0;
+    min-width: 100%
+
 `
 const TextBox = styled.h3`
     display: inline;
     font-size: 11px;
     font-weight: 400;
     line-height: 1.5em;
+    min-width: 100%
 `
 const AnotherBox = styled.div`
     background-repeat: no-repeat;
@@ -33,6 +38,7 @@ const AnotherBox = styled.div`
     display: block;
     opacity: 1;
     position: relative;
+    padding-right: 10px;
 `
 
 const containerStyles = css`
@@ -74,7 +80,7 @@ const containerStyles = css`
         display: flex;
         flex-direction: column;
         gap: 3px;
-
+        width: 33%;
     }
 
     .generalDetails p{
@@ -118,6 +124,10 @@ const containerStyles = css`
         max-width: 80%;
         height: auto;
     }
+
+    .youtubeContainer{
+    
+    }
 `
 export default function SearchDetail() {
     const { animeId } = useParams();
@@ -126,6 +136,10 @@ export default function SearchDetail() {
     const [streaming, setStreaming] = useState(null);
     const navigate = useNavigate();
 
+    const opts = {
+        height: 'auto',
+        width: '100%'
+      };
 
     useEffect(() => {
         const fetchAnimeDetails = async () => {
@@ -141,7 +155,7 @@ export default function SearchDetail() {
                 }
                 const data = await response.json();
                 setAnimeDetails(data.data);
-                // console.log(data.data);
+                 console.log(data.data);
 
                 const characterResponse = await fetch(
                     `https://api.jikan.moe/v4/anime/${animeId}/characters`
@@ -170,7 +184,7 @@ export default function SearchDetail() {
         <div className="animeContainer">
             {animeDetails && (
                 <div>
-                    <h2>{animeDetails.title}</h2>
+                    <h2>{animeDetails.title_english != null ? animeDetails.title_english : animeDetails.title}</h2>
                     <div className="imageAndDetails">
                         <img src={animeDetails.images.jpg.image_url} alt="Anime Poster" />
                         <div className="generalDetails">
@@ -193,7 +207,12 @@ export default function SearchDetail() {
                                     </ul>
                                 </div>
                             )}
-                    </div>
+                        </div>                    
+                        {animeDetails.trailer.url != null && 
+                        <div className="youtubeContainer">
+                            <p>Trailer:</p>
+                            <YouTube opts={opts} videoId={animeDetails.trailer.youtube_id}/>
+                        </div>}
                     </div>
                     <p>{animeDetails.synopsis.replace("[Written by MAL Rewrite]", "")}</p>
 

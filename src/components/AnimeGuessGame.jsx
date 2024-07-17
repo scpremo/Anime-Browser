@@ -567,7 +567,7 @@ export default function AnimeGuessGame(){
                                 //console.log(openingSongName)
                                 openingSongName = openingSongName.replace(/#/g, '');
                                 // Use YouTube API to search for the opening song on YouTube
-                                const youtubeApiKey = 'AIzaSyCd9GeZYszVU342h5Z0xnwFUoFV5slu4Jk'; // Replace with your YouTube API key
+                                const youtubeApiKey = 'AIzaSyB1oBBkqcqBUkCzt_Z0XJLgGOqr925BDfw'; // Replace with your YouTube API key
                                 const youtubeSearchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${openingSongName}&type=video&videoSyndicated=true&videoEmbeddable=true&key=${youtubeApiKey}`;
                                 const youtubeResponse = await fetch(youtubeSearchUrl);
                                 const youtubeData = await youtubeResponse.json();
@@ -861,7 +861,7 @@ export default function AnimeGuessGame(){
                     You got {score}/{selectedGameLength}!
                     {score==selectedGameLength  &&(
                         <div className="imageContainer">
-                            <img src="/grass.gif" alt="GIF of Swaying Grass"></img>
+                            <img src="/Anime-Browser/grass.gif" alt="GIF of Swaying Grass"></img>
                             <div className="overlayText">Touch Grass</div>
                         </div>
                     )}

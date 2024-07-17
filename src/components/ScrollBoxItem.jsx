@@ -51,7 +51,7 @@ export default function ScrollBoxItem({mal_id,title,title_english,images}) {
     margin: 6px`
     return(
         <AnotherBox>
-            <NavLink to={`/search/${mal_id}`}>
+            <NavLink to={`/Anime-Browser/search/${mal_id}`}>
                 <TextBox>
                     <AnimeText>
                         {title_english ? title_english : title}

@@ -148,7 +148,7 @@ const containerStyles = css`
         cursor: pointer;
         color: white;
         background: none;
-        background-image: url(/favorite.png);
+        background-image: url(/Anime-Browser/favorite.png);
         background-size: 100%, auto;
         background-position: center center;
         background-repeat: no-repeat;
@@ -161,7 +161,7 @@ const containerStyles = css`
         border: none;
         cursor: pointer;
         background: none;
-        background-image: url(/favorite_filled.png);
+        background-image: url(/Anime-Browser/favorite_filled.png);
         background-size: 100%, auto;
         background-position: center center;
         background-repeat: no-repeat;

@@ -32,7 +32,7 @@ const globalStyles = css`
 
 const router = createBrowserRouter([
   {
-      path: "/",
+      path: "/Anime-Browser/",
       element: <Root />,
       errorElement: <Root><ErrorPage /></Root>,
       children: [

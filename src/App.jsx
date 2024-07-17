@@ -102,18 +102,18 @@ export function Root(props) {
         <>
             <nav css={navStyle}>
                 <ul className="navbar" >
-                    <li className='homeButton'><NavLink to="/">Home</NavLink></li>
-                    <li><NavLink to="/guessSong" style={({ isActive }) => {
+                    <li className='homeButton'><NavLink to="/Anime-Browser/">Home</NavLink></li>
+                    <li><NavLink to="/Anime-Browser/guessSong" style={({ isActive }) => {
                         return {
                             backgroundColor: isActive ? "#111" : ""
                         }
                     }}>Guess the Opening!</NavLink></li>
-                    <li><NavLink to="/higherOrLower" style={({ isActive }) => {
+                    <li><NavLink to="/Anime-Browser/higherOrLower" style={({ isActive }) => {
                         return {
                             backgroundColor: isActive ? "#111" : ""
                         }
                     }}>Higher or Lower?</NavLink></li>
-                    <li><NavLink to="/search" style={({ isActive }) => {
+                    <li><NavLink to="/Anime-Browser/search" style={({ isActive }) => {
                         return {
                             backgroundColor: isActive ? "#111" : ""
                         }

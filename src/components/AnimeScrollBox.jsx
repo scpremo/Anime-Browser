@@ -69,7 +69,7 @@ export default function TopAnimeSeason({ api, boxText, pageLimit }) {
     `;
 
   const Right = styled.div`
-      background-image: url(/btn_handle.png);
+      background-image: url(/Anime-Browser/btn_handle.png);
       background-position: 0 0;
       background-repeat: no-repeat;
       background-size: 80px auto;
@@ -92,7 +92,7 @@ export default function TopAnimeSeason({ api, boxText, pageLimit }) {
     `;
 
   const Left = styled.div`
-    background-image: url(/btn_handle.png);
+    background-image: url(/Anime-Browser/btn_handle.png);
     background-position: -40px 0;
     background-repeat: no-repeat;
     background-size: 80px auto;

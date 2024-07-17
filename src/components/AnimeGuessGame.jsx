@@ -272,8 +272,8 @@ export default function AnimeGuessGame(){
     const [gameLength, setGameLength] = useState(3)
     const [scoreScreen,setScoreScreen] = useState(false)
     const[nextRound, setnextRound] = useState(false)
-    const [ratChance,setRatChance] = useState(4)//set both for 1 for always rat // set to either 4 or 5 for demo
-    const ratChanceReset = 100//set for 1 for always rat //set back to really large number before demo
+    const [ratChance,setRatChance] = useState(1000)//set both for 1 for always rat // set to either 4 or 5 for demo
+    const ratChanceReset = 10000//set for 1 for always rat //set back to really large number before demo
     const [correct, setCorrect] = useState(false)
 
     //custom dificulty vars

@@ -567,17 +567,27 @@ export default function AnimeGuessGame(){
                                 //console.log(openingSongName)
                                 openingSongName = openingSongName.replace(/#/g, '');
                                 // Use YouTube API to search for the opening song on YouTube
-                                const youtubeApiKey = 'AIzaSyB1oBBkqcqBUkCzt_Z0XJLgGOqr925BDfw'; // Replace with your YouTube API key
-                                const youtubeSearchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${openingSongName}&type=video&videoSyndicated=true&videoEmbeddable=true&key=${youtubeApiKey}`;
-                                const youtubeResponse = await fetch(youtubeSearchUrl);
-                                const youtubeData = await youtubeResponse.json();
-
-                                if (youtubeData.items && youtubeData.items.length > 0) {
-                                    // Extract the video ID of the first result
-                                    const videoId = youtubeData.items[0].id.videoId;
-                                    setYoutubeVideoId(videoId);
-                                    //console.log(youtubeData.items)
+                                try{
+                                    const youtubeApiKey = 'AIzaSyB1oBBkqcqBUkCzt_Z0XJLgGOqr925BDfw'; // Replace with your YouTube API key
+                                    const youtubeSearchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${openingSongName}&type=video&videoSyndicated=true&videoEmbeddable=true&key=${youtubeApiKey}`;
+                                    const youtubeResponse = await fetch(youtubeSearchUrl);
+                                    const youtubeData = await youtubeResponse.json();
+    
+                                    if (youtubeData.items && youtubeData.items.length > 0) {
+                                        // Extract the video ID of the first result
+                                        const videoId = youtubeData.items[0].id.videoId;
+                                        setYoutubeVideoId(videoId);
+                                        //console.log(youtubeData.items)
+                                    }
+                                    else{
+                                        throw("cant fetch")
+                                    }
                                 }
+                                catch(err){
+                                    alert("All uses of the google api have been used for the day which makes this part of the page nonfunctional, sorry for the inconvenience")
+                                    window.location.replace('https://scpremo.github.io/Anime-Browser');
+                                }
+                                
                             }
                             else if (animeBody) {
                                 await delay(1000)
@@ -585,7 +595,7 @@ export default function AnimeGuessGame(){
                                 //console.log("opening not found")
                             }
                         } catch (err) {
-                            //console.log(err);
+                            
                         }
                     }
                 }
